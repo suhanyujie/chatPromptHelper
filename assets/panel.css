@@ -1,0 +1,337 @@
+/*
+ * 这份样式只在 shadow root 内生效（content 入口配了 cssInjectionMode: 'ui'）。
+ * shadow 边界能挡住宿主页面的选择器，但挡不住继承类属性（font/color/line-height 等），
+ * 所以 .cph-root 上要把它们显式重置一遍。
+ */
+:host {
+  --cph-bg: #ffffff;
+  --cph-fg: #1f2328;
+  --cph-muted: #6b7280;
+  --cph-border: #e5e7eb;
+  --cph-hover: #f2f3f5;
+  --cph-active: #e8eaed;
+  --cph-accent: #10a37f;
+  --cph-shadow: 0 4px 24px rgba(0, 0, 0, 0.14);
+  --cph-radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --cph-bg: #1e1f22;
+    --cph-fg: #e6e6e6;
+    --cph-muted: #9aa0a6;
+    --cph-border: #34363b;
+    --cph-hover: #2a2c30;
+    --cph-active: #33363b;
+    --cph-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.cph-root {
+  /* 重置从宿主页面继承下来的排版属性 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  color: var(--cph-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.cph-root *,
+.cph-root *::before,
+.cph-root *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- 收起态的手柄 ---------- */
+
+.cph-handle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 6px;
+  border: 1px solid var(--cph-border);
+  border-right: none;
+  border-radius: var(--cph-radius) 0 0 var(--cph-radius);
+  background: var(--cph-bg);
+  color: var(--cph-muted);
+  box-shadow: var(--cph-shadow);
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.cph-handle:hover {
+  color: var(--cph-fg);
+  background: var(--cph-hover);
+}
+
+/* ---------- 展开态的面板 ---------- */
+
+.cph-panel {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  max-height: 70vh;
+  border: 1px solid var(--cph-border);
+  border-right: none;
+  border-radius: var(--cph-radius) 0 0 var(--cph-radius);
+  background: var(--cph-bg);
+  box-shadow: var(--cph-shadow);
+  overflow: hidden;
+}
+
+.cph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  padding: 10px 8px 10px 14px;
+  border-bottom: 1px solid var(--cph-border);
+}
+
+.cph-header-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cph-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 0;
+}
+
+.cph-section-label {
+  padding: 8px 14px 4px;
+  color: var(--cph-muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.cph-divider {
+  height: 1px;
+  margin: 6px 14px;
+  background: var(--cph-border);
+}
+
+.cph-empty {
+  padding: 24px 14px;
+  color: var(--cph-muted);
+  text-align: center;
+}
+
+/* ---------- 列表项 ---------- */
+
+.cph-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0 8px 0 14px;
+}
+
+.cph-item:hover {
+  background: var(--cph-hover);
+}
+
+.cph-item-main {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cph-item-actions {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.cph-item:hover .cph-item-actions,
+.cph-item:focus-within .cph-item-actions {
+  opacity: 1;
+}
+
+/* ---------- 按钮 ---------- */
+
+.cph-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--cph-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cph-icon-btn:hover {
+  background: var(--cph-active);
+  color: var(--cph-fg);
+}
+
+.cph-footer {
+  flex: none;
+  padding: 6px;
+  border-top: 1px solid var(--cph-border);
+}
+
+.cph-add-btn {
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--cph-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cph-add-btn:hover {
+  background: var(--cph-hover);
+  color: var(--cph-fg);
+}
+
+/* ---------- 编辑弹层 ---------- */
+
+.cph-editor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--cph-bg);
+}
+
+.cph-editor-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.cph-field-label {
+  color: var(--cph-muted);
+  font-size: 11px;
+}
+
+.cph-input,
+.cph-textarea {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--cph-border);
+  border-radius: 7px;
+  background: var(--cph-bg);
+  color: var(--cph-fg);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cph-input:focus,
+.cph-textarea:focus {
+  outline: none;
+  border-color: var(--cph-accent);
+}
+
+.cph-textarea {
+  flex: 1;
+  min-height: 140px;
+  resize: none;
+}
+
+.cph-editor-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: none;
+  padding: 10px 14px;
+  border-top: 1px solid var(--cph-border);
+}
+
+.cph-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--cph-border);
+  border-radius: 7px;
+  background: var(--cph-bg);
+  color: var(--cph-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cph-btn:hover {
+  background: var(--cph-hover);
+}
+
+.cph-btn-primary {
+  border-color: var(--cph-accent);
+  background: var(--cph-accent);
+  color: #fff;
+}
+
+.cph-btn-primary:hover {
+  filter: brightness(1.06);
+  background: var(--cph-accent);
+}
+
+.cph-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* ---------- 提示条 ---------- */
+
+.cph-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483001;
+  max-width: 300px;
+  padding: 9px 13px;
+  border: 1px solid var(--cph-border);
+  border-radius: 8px;
+  background: var(--cph-bg);
+  color: var(--cph-fg);
+  box-shadow: var(--cph-shadow);
+}
+
+.cph-header-actions {
+  display: flex;
+  gap: 2px;
+}

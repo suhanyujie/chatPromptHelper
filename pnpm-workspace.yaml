@@ -1,0 +1,3 @@
+# esbuild 的 postinstall 只是校验平台二进制，放行它以消除 pnpm 的 ignored-builds 警告
+allowBuilds:
+  esbuild: true

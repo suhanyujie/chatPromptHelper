@@ -1,0 +1,43 @@
+{
+  "name": "chat-prompt-helper",
+  "description": "在 ChatGPT / 通义千问页面右侧显示常用 prompt 列表，点击即可填入输入框。",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "test": "wxt build && node --test --test-concurrency=1 test/manifest.test.mjs test/site-rules.test.mjs test/insert.test.mjs test/extension.test.mjs test/popup.test.mjs",
+    "test:unit": "node --test test/site-rules.test.mjs test/insert.test.mjs",
+    "test:e2e": "wxt build && node --test --test-concurrency=1 test/extension.test.mjs test/popup.test.mjs",
+    "test:setup": "playwright install chromium",
+    "test:manifest": "wxt build && node --test test/manifest.test.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@wxt-dev/module-react": "^1.1.5",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.63.0",
+    "prosemirror-model": "^1.25.11",
+    "prosemirror-schema-basic": "^1.2.4",
+    "prosemirror-state": "^1.4.4",
+    "prosemirror-view": "^1.42.3",
+    "slate": "^0.126.2",
+    "slate-history": "^0.113.1",
+    "slate-react": "^0.126.4",
+    "typescript": "^5.9.3",
+    "web-ext": "^10.5.0",
+    "wxt": "^0.21.3"
+  }
+}
